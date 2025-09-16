@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.1.1...v0.1.2) (2025-09-16)
+
+
+### Miscellaneous Chores
+
+* update release workflow ([6a25def](https://github.com/ZeroGachis/metabase-helm-chart/commit/6a25def7540182221cbaf65777a7c488c15081da))
+
 ## [0.1.1](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.1.0...v0.1.1) (2025-09-16)
 
 
