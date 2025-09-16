@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.1.2...v0.2.0) (2025-09-16)
+
+
+### Features
+
+* init metabase helm chart ([3ed5118](https://github.com/ZeroGachis/metabase-helm-chart/commit/3ed511888465ffcb03e2ac2c85a81be4c3d5777b))
+
+
+### Miscellaneous Chores
+
+* update Chart.yaml with detailed description, maintainers, icon, and home URL ([d5f89ed](https://github.com/ZeroGachis/metabase-helm-chart/commit/d5f89eddc4e871b30b071050ff9e83757b635c8a))
+
 ## [0.1.2](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.1.1...v0.1.2) (2025-09-16)
 
 
