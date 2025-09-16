@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  metabase:
+  - apiVersion: v2
+    created: "2025-09-16T12:07:19.62705206Z"
+    description: A Helm chart to deploy a Metabase instance for Kubernetes
+    digest: 5fa3bb97a77c52685f4c840921bd5419491780d31c66c8af86e22a24c6c5fa41
+    name: metabase
+    type: application
+    urls:
+    - https://github.com/ZeroGachis/metabase-helm-chart/releases/download/metabase-0.1.2/metabase-0.1.2.tgz
+    version: 0.1.2
+generated: "2025-09-16T12:07:19.627103346Z"
