@@ -1,0 +1,29 @@
+# Helm
+charts/*.tgz
+*.tgz
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Test files
+test-*.yaml
+temp-*.yaml
+
+# Backup files
+*.bak
+*.backup

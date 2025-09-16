@@ -1,17 +1,16 @@
-# Default values for metabase - Generic version
+# Default values for metabase - Smartway specific version
 
 # Global labels for all resources
 global:
   service_name: metabase
   env_name: dev
   version: latest
-  cluster_name: default
+  cluster_name: apps
   labels:
-    app.kubernetes.io/name: metabase
-    app.kubernetes.io/instance: metabase
-    app.kubernetes.io/version: latest
-    app.kubernetes.io/component: analytics
-    app.kubernetes.io/part-of: metabase
+    smartway.ai/app: swan
+    smartway.ai/environment: dev
+    smartway.ai/system: platform
+    smartway.ai/github-repository: ZeroGachis_metabase-service
     tags.datadoghq.com/env: "dev"
     tags.datadoghq.com/service: "metabase"
     tags.datadoghq.com/version: "latest"
@@ -26,25 +25,30 @@ metabase:
   resources:
     requests:
       cpu: 500m
-      memory: 1024Mi
+      memory: 2048Mi
     limits:
       cpu: 1000m
-      memory: 2048Mi
+      memory: 2560Mi
   persistence:
-    enabled: false
-    storageClass: ""
+    enabled: true
+    storageClass: standard
     accessMode: ReadWriteOnce
     size: 10Gi
   replicas: 1
-  tolerations: []
-  nodeSelector: {}
+  tolerations:
+    - key: smartway.ai/node_group_type
+      operator: Equal
+      value: "critical-workers"
+      effect: NoSchedule
+  nodeSelector:
+    smartway.ai/node_group_type: "critical-workers"
   ingress:
-    url: metabase.example.com
+    url: metabase-dev.smartway.ai
   # Optional config section - if not provided, defaults will be used
   config:
     dbType: postgres
     dbPort: "5432"
-    javaOpts: "-Xms512m -Xmx1024m"
+    javaOpts: "-Xmx2g -Dc3p0.maxIdleTime=900 -Dc3p0.maxIdleTimeExcessConnections=1500"
     siteUrl: ""
     redirectAllRequestsToHttps: "false"
     customVars: {}

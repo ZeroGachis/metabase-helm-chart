@@ -1,0 +1,59 @@
+# Production configuration example
+# This shows how to configure Metabase for a production environment
+
+# Global labels for all resources
+global:
+  service_name: metabase
+  env_name: production
+  version: v1.0.0
+  cluster_name: production
+  labels:
+    app.kubernetes.io/name: metabase
+    app.kubernetes.io/instance: metabase
+    app.kubernetes.io/version: v1.0.0
+    app.kubernetes.io/component: analytics
+    app.kubernetes.io/part-of: metabase
+    environment: production
+    tags.datadoghq.com/env: "production"
+    tags.datadoghq.com/service: "metabase"
+    tags.datadoghq.com/version: "v1.0.0"
+
+# Metabase configuration
+metabase:
+  image:
+    repository: metabase/metabase
+    tag: v0.48.0
+  ports:
+    http: 3000
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 2048Mi
+    limits:
+      cpu: 2000m
+      memory: 4096Mi
+  persistence:
+    enabled: true
+    storageClass: fast-ssd
+    accessMode: ReadWriteOnce
+    size: 50Gi
+  replicas: 2
+  tolerations: []
+  nodeSelector: {}
+  ingress:
+    url: metabase.company.com
+  config:
+    dbType: postgres
+    dbPort: "5432"
+    javaOpts: "-Xmx3g -Dc3p0.maxIdleTime=900 -Dc3p0.maxIdleTimeExcessConnections=1500"
+    siteUrl: "https://metabase.company.com/"
+    redirectAllRequestsToHttps: "true"
+    customVars:
+      MB_ENCRYPTION_SECRET_KEY: "your-encryption-key"
+      MB_EMAIL_SMTP_HOST: "smtp.company.com"
+      MB_EMAIL_SMTP_PORT: "587"
+      MB_EMAIL_SMTP_USERNAME: "metabase@company.com"
+
+# Service configuration
+service:
+  type: ClusterIP
