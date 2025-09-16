@@ -1,18 +1,20 @@
-# Default values for metabase - Generic version
+# Development configuration example
+# This shows a minimal configuration for development
 
 # Global labels for all resources
 global:
   service_name: metabase
-  env_name: dev
+  env_name: development
   version: latest
-  cluster_name: default
+  cluster_name: dev
   labels:
     app.kubernetes.io/name: metabase
     app.kubernetes.io/instance: metabase
     app.kubernetes.io/version: latest
     app.kubernetes.io/component: analytics
     app.kubernetes.io/part-of: metabase
-    tags.datadoghq.com/env: "dev"
+    environment: development
+    tags.datadoghq.com/env: "development"
     tags.datadoghq.com/service: "metabase"
     tags.datadoghq.com/version: "latest"
 
@@ -25,27 +27,26 @@ metabase:
     http: 3000
   resources:
     requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
       cpu: 500m
       memory: 1024Mi
-    limits:
-      cpu: 1000m
-      memory: 2048Mi
   persistence:
     enabled: false
     storageClass: ""
     accessMode: ReadWriteOnce
-    size: 10Gi
+    size: 5Gi
   replicas: 1
   tolerations: []
   nodeSelector: {}
   ingress:
-    url: metabase.example.com
-  # Optional config section - if not provided, defaults will be used
+    url: metabase-dev.local
   config:
     dbType: postgres
     dbPort: "5432"
-    javaOpts: "-Xms512m -Xmx1024m"
-    siteUrl: ""
+    javaOpts: "-Xms256m -Xmx512m"
+    siteUrl: "http://metabase-dev.local/"
     redirectAllRequestsToHttps: "false"
     customVars: {}
 

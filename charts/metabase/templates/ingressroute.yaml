@@ -1,0 +1,17 @@
+{{- if .Values.metabase.ingress.url }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ .Values.global.service_name }}-ingressroute
+  labels:
+    {{ toYaml .Values.global.labels | nindent 4 }}
+spec:
+  entryPoints:
+    - internal
+  routes:
+    - match: Host(`{{ .Values.metabase.ingress.url }}`)
+      kind: Rule
+      services:
+        - name: {{ .Values.global.service_name }}-svc
+          port: {{ .Values.metabase.ports.http }}
+{{- end }}
