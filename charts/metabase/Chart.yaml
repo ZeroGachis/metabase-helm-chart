@@ -1,7 +1,11 @@
 apiVersion: v2
 name: metabase
-description: A Helm chart to deploy a Metabase instance for Kubernetes
-
+description: A Helm chart to deploy a Metabase instance for Kubernetes in a context with Hashicorp Vault as secret manager and Traefik as ingress controller.
+maintainers: 
+- name: Smartway
+  email: devops@smartway.ai
+icon: https://www.metabase.com/img/favicon.ico
+home: https://github.com/ZeroGachis/metabase-helm-chart/
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
