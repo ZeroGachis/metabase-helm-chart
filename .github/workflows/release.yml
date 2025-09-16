@@ -39,5 +39,7 @@ jobs:
       - name: Run chart-releaser
         if: ${{ needs.github-release.outputs.release_created == 'true' }}
         uses: helm/chart-releaser-action@v1.7.0
+        with:
+          charts_dir: charts/
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
