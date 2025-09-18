@@ -1,0 +1,36 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: kind
+nodes:
+- role: control-plane
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+  extraPortMappings:
+  # Traefik HTTP
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  # Traefik HTTPS
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+  # Vault API
+  - containerPort: 8200
+    hostPort: 8200
+    protocol: TCP
+  # Metabase (for direct access if needed)
+  - containerPort: 3000
+    hostPort: 3000
+    protocol: TCP
+  # Additional ports for testing
+  - containerPort: 8080
+    hostPort: 8080
+    protocol: TCP
+  - containerPort: 9090
+    hostPort: 9090
+    protocol: TCP
+

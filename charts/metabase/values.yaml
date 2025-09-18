@@ -1,54 +1,151 @@
-# Default values for metabase - Generic version
+# Default values for metabase 
 
-# Global labels for all resources
+# Global configuration for all resources
 global:
+  # -- Service name used for resource naming
   service_name: metabase
+  # -- Environment name (dev, staging, prod)
   env_name: dev
+  # -- Application version
   version: latest
+  # -- Kubernetes cluster name
   cluster_name: default
-  labels:
-    app.kubernetes.io/name: metabase
-    app.kubernetes.io/instance: metabase
-    app.kubernetes.io/version: latest
-    app.kubernetes.io/component: analytics
-    app.kubernetes.io/part-of: metabase
-    tags.datadoghq.com/env: "dev"
-    tags.datadoghq.com/service: "metabase"
-    tags.datadoghq.com/version: "latest"
+  # -- Global labels applied to all resources
+  labels: {}
 
-# Metabase configuration
+# Metabase application configuration
 metabase:
+  # -- Metabase image configuration
   image:
+    # -- Metabase image repository
     repository: metabase/metabase
+    # -- Metabase image tag
     tag: latest
+  # -- Port configuration
   ports:
+    # -- HTTP port for Metabase container
     http: 3000
+  
+  # -- Health check configuration
+  healthCheck:
+    # -- Readiness probe configuration
+    readiness:
+      # -- Initial delay before readiness probe starts (seconds)
+      initialDelaySeconds: 120
+      # -- Period between readiness probe checks (seconds)
+      periodSeconds: 15
+      # -- Timeout for readiness probe (seconds)
+      timeoutSeconds: 5
+      # -- Number of successful checks needed for readiness
+      successThreshold: 1
+      # -- Number of failed checks before marking as not ready
+      failureThreshold: 10
+    # -- Liveness probe configuration
+    liveness:
+      # -- Initial delay before liveness probe starts (seconds)
+      initialDelaySeconds: 90
+      # -- Period between liveness probe checks (seconds)
+      periodSeconds: 15
+      # -- Timeout for liveness probe (seconds)
+      timeoutSeconds: 5
+      # -- Number of successful checks needed for liveness
+      successThreshold: 1
+      # -- Number of failed checks before restarting container
+      failureThreshold: 10
+  # -- Resource requests and limits
   resources:
+    # -- Resource requests
     requests:
+      # -- CPU request
       cpu: 500m
+      # -- Memory request
       memory: 1024Mi
+    # -- Resource limits
     limits:
+      # -- CPU limit
       cpu: 1000m
+      # -- Memory limit
       memory: 2048Mi
+  # -- Persistence configuration
   persistence:
+    # -- Enable persistent storage
     enabled: false
+    # -- Storage class for persistent volume
     storageClass: ""
+    # -- Access mode for persistent volume
     accessMode: ReadWriteOnce
+    # -- Size of persistent volume
     size: 10Gi
+  # -- Number of replicas
   replicas: 1
+  # -- Pod tolerations
   tolerations: []
+  # -- Node selector for pod placement
   nodeSelector: {}
+  # -- IngressRoute configuration
   ingress:
+    # -- IngressRoute URL/hostname
     url: metabase.example.com
-  # Optional config section - if not provided, defaults will be used
-  config:
-    dbType: postgres
-    dbPort: "5432"
-    javaOpts: "-Xms512m -Xmx1024m"
-    siteUrl: ""
-    redirectAllRequestsToHttps: "false"
-    customVars: {}
+    # -- Entry points for Traefik
+    entryPoints:
+      - internal
+    # -- TLS configuration
+    tls:
+      enabled: false
+      secretName: ""
+  # -- ConfigMap variables configuration
+  configMapVars:
+    - name: MB_DB_TYPE
+      value: h2
+    - name: MB_DB_PORT
+      value: "5432"
+    - name: JAVA_OPTS
+      value: "-Xmx2g -Dc3p0.maxIdleTime=900 -Dc3p0.maxIdleTimeExcessConnections=1500"
+    - name: MB_REDIRECT_ALL_REQUESTS_TO_HTTPS
+      value: "false"
 
 # Service configuration
 service:
+  # -- Service type (ClusterIP, NodePort, LoadBalancer)
   type: ClusterIP
+  # -- Service port (port exposed by the service)
+  port: 3000
+  # -- Target port (port on the container, defaults to metabase.ports.http)
+  targetPort: null
+
+# Service account configuration
+serviceAccount:
+  # -- Create a service account
+  create: true
+  # -- Service account name
+  name: metabase-sa
+# Secret configuration
+secrets:
+  # -- List of secrets to create
+  list:
+    - name: metabase-db-credentials-secret
+      vaultPath: metabase/db-credentials
+      envVars:
+        - name: MB_DB_DBNAME
+          key: DB_NAME
+        - name: MB_DB_USER
+          key: DB_USER
+        - name: MB_DB_PASS
+          key: DB_PASS
+    - name: metabase-db-host-secret
+      vaultPath: metabase/db-host
+      envVars:
+        - name: MB_DB_HOST
+          key: DB_HOST
+# Vault configuration
+vault:
+  # -- Vault connection configuration
+  connection:
+    # -- Create VaultConnection resource
+    create: true
+    # -- VaultConnection resource name
+    name: default
+    # -- Vault server address
+    address: http://vault.vault.svc.cluster.local:8200
+  # -- Vault authentication mount path
+  authMount: kubernetes

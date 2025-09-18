@@ -13,7 +13,7 @@ spec:
     metadata:
       labels:
         app: {{ .Values.global.service_name }}
-        {{ toYaml .Values.global.labels | nindent 8 }}
+        {{- include "metabase.labels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "metabase.serviceAccountName" . }}
       containers:
@@ -29,44 +29,34 @@ spec:
         - configMapRef:
             name: {{ .Values.global.service_name }}-config
         env:
-        - name: MB_DB_DBNAME
+        {{- range .Values.secrets.list }}
+        {{- $secretName := .name }}
+        {{- range .envVars }}
+        - name: {{ .name }}
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.global.service_name }}-secret
-              key: DB_NAME
-        - name: MB_DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.global.service_name }}-secret
-              key: DB_USER
-        - name: MB_DB_PASS
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.global.service_name }}-secret
-              key: DB_PASS
-        - name: MB_DB_HOST
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.global.service_name }}-db-secret
-              key: RDS_HOSTNAME
+              name: {{ $secretName }}
+              key: {{ .key }}
+        {{- end }}
+        {{- end }}
         readinessProbe:
           httpGet:
             path: /api/health
             port: {{ .Values.metabase.ports.http }}
-          initialDelaySeconds: 90
-          periodSeconds: 15
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 10
+          initialDelaySeconds: {{ .Values.metabase.healthCheck.readiness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.metabase.healthCheck.readiness.periodSeconds }}
+          timeoutSeconds: {{ .Values.metabase.healthCheck.readiness.timeoutSeconds }}
+          successThreshold: {{ .Values.metabase.healthCheck.readiness.successThreshold }}
+          failureThreshold: {{ .Values.metabase.healthCheck.readiness.failureThreshold }}
         livenessProbe:
           httpGet:
             path: /api/health
             port: {{ .Values.metabase.ports.http }}
-          initialDelaySeconds: 90
-          periodSeconds: 15
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 10
+          initialDelaySeconds: {{ .Values.metabase.healthCheck.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.metabase.healthCheck.liveness.periodSeconds }}
+          timeoutSeconds: {{ .Values.metabase.healthCheck.liveness.timeoutSeconds }}
+          successThreshold: {{ .Values.metabase.healthCheck.liveness.successThreshold }}
+          failureThreshold: {{ .Values.metabase.healthCheck.liveness.failureThreshold }}
       {{- with .Values.metabase.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
