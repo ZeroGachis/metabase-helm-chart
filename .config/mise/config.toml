@@ -1,0 +1,68 @@
+[tools]
+helm = "3"
+helm-ct = "3"
+"helm-docs" = "1"
+"kind" = "0.30.0"
+
+[tasks."helm:template"]
+description = "🔍 Template the Helm chart"
+run = "helm template ./charts/metabase"
+
+[tasks."helm:docs"]
+description = "🔍 Generate the Helm chart documentation"
+run = "helm-docs"
+[tasks."kind:create"]
+description = "Create a kind cluster"
+run = [
+  "kind create cluster --config kind-config.yaml"
+]
+
+[tasks."kind:setup"]
+description = "Setup Vault and Traefik on kind cluster"
+run = [
+  "kubectl apply --context kind-kind -f https://raw.githubusercontent.com/traefik/traefik/v3.5/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml",
+  "helm repo add hashicorp https://helm.releases.hashicorp.com",
+  "helm repo add traefik https://traefik.github.io/charts",
+  "helm repo update",
+  "helm install vault-secrets-operator hashicorp/vault-secrets-operator --kube-context kind-kind --namespace vault --create-namespace",
+  "helm install vault hashicorp/vault --kube-context kind-kind --namespace vault --set 'server.dev.enabled=true' --set 'server.dev.devRootToken=root'",
+  "helm install traefik traefik/traefik --kube-context kind-kind --namespace traefik --create-namespace --set ports.websecure.tls.enabled=true",
+  "sleep 60",
+  "kubectl wait --context kind-kind --for=condition=ready pod -l app.kubernetes.io/name=vault,component=server -n vault --timeout=300s",
+  "kubectl exec --context kind-kind -n vault vault-0 -- vault auth enable kubernetes",
+  "kubectl exec --context kind-kind -n vault vault-0 -- vault write auth/kubernetes/config kubernetes_host=\"https://kubernetes.default.svc.cluster.local:443\"",
+  "kubectl exec --context kind-kind -n vault vault-0 -- sh -c 'printf \"path \\\"secret/data/metabase/*\\\" {\\n  capabilities = [\\\"read\\\"]\\n}\" | vault policy write metabase-policy -'",
+  "kubectl exec --context kind-kind -n vault vault-0 -- vault write auth/kubernetes/role/vault-metabase-role bound_service_account_names=vault-metabase-sa bound_service_account_namespaces=metabase* policies=metabase-policy ttl=24h",
+  "kubectl exec --context kind-kind -n vault vault-0 -- vault kv put secret/metabase/db-credentials DB_NAME=metabase_test DB_USER=metabase_user DB_PASS=metabase_password",
+  "kubectl exec --context kind-kind -n vault vault-0 -- vault kv put secret/metabase/db-host DB_HOST=localhost"
+]
+
+[tasks."kind:delete"]
+description = "🔍 Delete a kind cluster"
+run = "kind delete cluster"
+
+[tasks."ct:install"]
+description = "Test Helm chart installation using chart-testing"
+run = [
+  "ct install"
+]
+
+[tasks."ct:install_with_target"]
+description = "Test Helm chart installation using chart-testing with customizable target branch"
+run = [
+  "ct install --target-branch {{arg(name='target_branch', default='main')}}"
+]
+
+[tasks."ct:lint"]
+description = "Lint Helm chart using chart-testing (without version bump check)"
+run = [
+  "ct lint --lint-conf .ct/chart_schema.yaml --check-version-increment=false"
+]
+
+
+[tasks."ct:lint_with_target"]
+description = "Lint Helm chart using chart-testing with customizable target branch"
+run = [
+  "ct lint --lint-conf .ct/chart_schema.yaml --check-version-increment=false --target-branch {{arg(name='target_branch', default='main')}}"
+]
+
