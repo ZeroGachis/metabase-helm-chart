@@ -7,11 +7,17 @@ metadata:
     {{ toYaml .Values.global.labels | nindent 4 }}
 spec:
   entryPoints:
-    - internal
+    {{- range .Values.metabase.ingress.entryPoints }}
+    - {{ . }}
+    {{- end }}
+  {{- if .Values.metabase.ingress.tls.enabled }}
+  tls:
+    secretName: {{ .Values.metabase.ingress.tls.secretName }}
+  {{- end }}
   routes:
     - match: Host(`{{ .Values.metabase.ingress.url }}`)
       kind: Rule
       services:
         - name: {{ .Values.global.service_name }}-svc
-          port: {{ .Values.metabase.ports.http }}
+          port: {{ .Values.service.port }}
 {{- end }}

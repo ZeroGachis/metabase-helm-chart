@@ -5,15 +5,7 @@ metadata:
   labels:
     {{ toYaml .Values.global.labels | nindent 4 }}
 data:
-  MB_DB_TYPE: {{ .Values.metabase.config.dbType | default "postgres" }}
-  MB_DB_PORT: {{ .Values.metabase.config.dbPort | default "5432" | quote }}
-  JAVA_OPTS: {{ .Values.metabase.config.javaOpts | default "-Xmx2g -Dc3p0.maxIdleTime=900 -Dc3p0.maxIdleTimeExcessConnections=1500" | quote }}
-  {{- if .Values.metabase.config.siteUrl }}
-  MB_SITE_URL: {{ .Values.metabase.config.siteUrl | quote }}
-  {{- else }}
+  {{- range .Values.metabase.configMapVars }}
+  {{ .name }}: {{ .value | quote }}
+  {{- end }}
   MB_SITE_URL: https://{{ .Values.metabase.ingress.url }}/
-  {{- end }}
-  MB_REDIRECT_ALL_REQUESTS_TO_HTTPS: {{ .Values.metabase.config.redirectAllRequestsToHttps | default "false" | quote }}
-  {{- with .Values.metabase.config.customVars }}
-  {{- toYaml . | nindent 2 }}
-  {{- end }}
