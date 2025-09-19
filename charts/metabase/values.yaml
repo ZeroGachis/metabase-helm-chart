@@ -142,4 +142,4 @@ vault:
     # -- Create Vault service account
     create: true
     # -- Vault service account name
-    name: vault-metabase-sa
+    name: ""
