@@ -18,7 +18,7 @@ A Helm chart to deploy a Metabase instance for Kubernetes in a context with Hash
 |-----|------|---------|-------------|
 | global.labels | object | `{}` | Global labels applied to all resources |
 | global.service_name | string | `"metabase"` | Service name used for resource naming |
-| metabase.configMapVars | list | `[{"name":"MB_DB_TYPE","value":"h2"},{"name":"MB_DB_PORT","value":"5432"},{"name":"JAVA_OPTS","value":"-Xmx2g -Dc3p0.maxIdleTime=900 -Dc3p0.maxIdleTimeExcessConnections=1500"},{"name":"MB_REDIRECT_ALL_REQUESTS_TO_HTTPS","value":"false"}]` | ConfigMap variables configuration |
+| metabase.configMapVars | list | `[{"name":"MB_DB_TYPE","value":"h2"},{"name":"MB_DB_PORT","value":"5432"},{"name":"MB_REDIRECT_ALL_REQUESTS_TO_HTTPS","value":"false"}]` | ConfigMap variables configuration |
 | metabase.healthCheck | object | `{"liveness":{"failureThreshold":10,"initialDelaySeconds":90,"periodSeconds":15,"successThreshold":1,"timeoutSeconds":5},"readiness":{"failureThreshold":10,"initialDelaySeconds":120,"periodSeconds":15,"successThreshold":1,"timeoutSeconds":5}}` | Health check configuration |
 | metabase.healthCheck.liveness | object | `{"failureThreshold":10,"initialDelaySeconds":90,"periodSeconds":15,"successThreshold":1,"timeoutSeconds":5}` | Liveness probe configuration |
 | metabase.healthCheck.liveness.failureThreshold | int | `10` | Number of failed checks before restarting container |
@@ -39,6 +39,7 @@ A Helm chart to deploy a Metabase instance for Kubernetes in a context with Hash
 | metabase.ingress.entryPoints | list | `["internal"]` | Entry points for Traefik |
 | metabase.ingress.tls | object | `{"enabled":false,"secretName":""}` | TLS configuration |
 | metabase.ingress.url | string | `"metabase.example.com"` | IngressRoute URL/hostname |
+| metabase.javaOpts | string | `"-Xmx1g -Dc3p0.maxIdleTime=900 -Dc3p0.maxIdleTimeExcessConnections=1500"` | Java options for Metabase JVM |
 | metabase.nodeSelector | object | `{}` | Node selector for pod placement |
 | metabase.ports | object | `{"http":3000}` | Port configuration |
 | metabase.ports.http | int | `3000` | HTTP port for Metabase container |
