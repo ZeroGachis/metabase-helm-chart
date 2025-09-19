@@ -62,6 +62,8 @@ metabase:
       memory: 2048Mi
   # -- Number of replicas
   replicas: 1
+  # -- Java options for Metabase JVM
+  javaOpts: "-Xmx1g -Dc3p0.maxIdleTime=900 -Dc3p0.maxIdleTimeExcessConnections=1500"
   # -- Pod tolerations
   tolerations: []
   # -- Node selector for pod placement
@@ -83,8 +85,6 @@ metabase:
       value: h2
     - name: MB_DB_PORT
       value: "5432"
-    - name: JAVA_OPTS
-      value: "-Xmx2g -Dc3p0.maxIdleTime=900 -Dc3p0.maxIdleTimeExcessConnections=1500"
     - name: MB_REDIRECT_ALL_REQUESTS_TO_HTTPS
       value: "false"
   
