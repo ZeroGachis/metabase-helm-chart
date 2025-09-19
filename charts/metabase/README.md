@@ -55,8 +55,8 @@ A Helm chart to deploy a Metabase instance for Kubernetes in a context with Hash
 | service.port | int | `3000` | Service port (port exposed by the service) |
 | service.targetPort | string | `nil` | Target port (port on the container, defaults to metabase.ports.http) |
 | service.type | string | `"ClusterIP"` | Service type (ClusterIP, NodePort, LoadBalancer) |
-| serviceAccount.create | bool | `true` | Create a service account |
-| serviceAccount.name | string | `"metabase-sa"` | Service account name |
+| serviceAccount.create | bool | `false` | Create a service account |
+| serviceAccount.name | string | `""` | Service account name (required if create is true) |
 | vault.authMount | string | `"kubernetes"` | Vault authentication mount path |
 | vault.connection | object | `{"address":"http://vault.vault.svc.cluster.local:8200","create":true,"name":"default"}` | Vault connection configuration |
 | vault.connection.address | string | `"http://vault.vault.svc.cluster.local:8200"` | Vault server address |

@@ -117,9 +117,12 @@ service:
 # Service account configuration
 serviceAccount:
   # -- Create a service account
-  create: true
-  # -- Service account name
-  name: metabase-sa
+  create: false
+  # -- Service account name (required if create is true)
+  name: ""
+  # Example configuration:
+  # create: true
+  # name: metabase-sa
 # Vault configuration
 vault:
   # -- Vault connection configuration
