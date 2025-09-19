@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.4.1...v0.5.0) (2025-09-19)
+
+
+### Features
+
+* add support for optional global labels in Metabase deployment configuration ([a0ff57f](https://github.com/ZeroGachis/metabase-helm-chart/commit/a0ff57f9adc89c9e4047839ee882d35d98b559ee))
+
 ## [0.4.1](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.4.0...v0.4.1) (2025-09-19)
 
 
