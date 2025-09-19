@@ -62,6 +62,7 @@ A Helm chart to deploy a Metabase instance for Kubernetes in a context with Hash
 | vault.connection.address | string | `"http://vault.vault.svc.cluster.local:8200"` | Vault server address |
 | vault.connection.create | bool | `true` | Create VaultConnection resource |
 | vault.connection.name | string | `"default"` | VaultConnection resource name |
+| vault.role | string | `"vault-metabase-role"` | Vault role name for Kubernetes authentication |
 | vault.serviceAccount | object | `{"create":true,"name":"vault-metabase-sa"}` | Vault service account configuration |
 | vault.serviceAccount.create | bool | `true` | Create Vault service account |
 | vault.serviceAccount.name | string | `"vault-metabase-sa"` | Vault service account name |
