@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.4.0...v0.4.1) (2025-09-19)
+
+
+### Bug Fixes
+
+* update vault service account name logic ([b084513](https://github.com/ZeroGachis/metabase-helm-chart/commit/b0845134d9587f4281b70a73167dde8cbd507978))
+
 ## [0.4.0](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.3.0...v0.4.0) (2025-09-19)
 
 
