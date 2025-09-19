@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.4.0](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.3.0...v0.4.0) (2025-09-19)
+
+
+### Features
+
+* add Java options configuration for Metabase in README and values.yaml ([4ca6887](https://github.com/ZeroGachis/metabase-helm-chart/commit/4ca688794628cbb4c0353a3caa3335ff9ceab083))
+* add Vault role configuration for Kubernetes authentication in Metabase chart ([182e7c8](https://github.com/ZeroGachis/metabase-helm-chart/commit/182e7c820d17c0b8dafa65d7176db0ea5d0fa4a2))
+* add Vault service account configuration to Metabase chart ([eac0ccc](https://github.com/ZeroGachis/metabase-helm-chart/commit/eac0ccc726e00d64e062b1497f8d4f1f4509b662))
+* update service account configuration in Metabase chart to allow optional creation ([9270749](https://github.com/ZeroGachis/metabase-helm-chart/commit/92707498047793ec1f25c020a013c3a724f0cb51))
+
 ## [0.3.0](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.2.0...v0.3.0) (2025-09-19)
 
 
