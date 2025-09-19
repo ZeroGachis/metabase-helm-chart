@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.3.0](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.2.0...v0.3.0) (2025-09-19)
+
+
+### Features
+
+* init metabase helm chart ([f17996c](https://github.com/ZeroGachis/metabase-helm-chart/commit/f17996cb7ee87a5cc408c30f35f5f671d6dd3a67))
+
+
+### Bug Fixes
+
+* clean up Metabase chart configuration by removing unused global variables and persistence settings ([2390beb](https://github.com/ZeroGachis/metabase-helm-chart/commit/2390beb157700e116402918723975ad608d428d7))
+
+
+### Miscellaneous Chores
+
+* init project ([2932889](https://github.com/ZeroGachis/metabase-helm-chart/commit/29328896a625ef348c1ca081336dd73e0dec1ecb))
+* **main:** release 0.1.1 ([4712a96](https://github.com/ZeroGachis/metabase-helm-chart/commit/4712a968dffffe33dec6a023662f3b5a50da9efb))
+* **main:** release 0.1.2 ([1e2b880](https://github.com/ZeroGachis/metabase-helm-chart/commit/1e2b88009a3733b7ffcc63d5acbc9a7085d85f79))
+* **main:** release 0.2.0 ([0b54da8](https://github.com/ZeroGachis/metabase-helm-chart/commit/0b54da894c148c5ec9cb10c89cd7ae4036ad9e53))
+* remove appVersion field from metabase Chart.yaml ([bb24fe4](https://github.com/ZeroGachis/metabase-helm-chart/commit/bb24fe431bf5e94b096a232aff462d6724f4087d))
+* update Chart.yaml with detailed description, maintainers, icon, and home URL ([a44aece](https://github.com/ZeroGachis/metabase-helm-chart/commit/a44aece42e8f8689f599616d7c69a6ffc0d1b64a))
+* update release workflow ([757bff0](https://github.com/ZeroGachis/metabase-helm-chart/commit/757bff0b5454a96214537c9c146aa8e274079f5e))
+
+
+### Code Refactoring
+
+* restructure Metabase chart secrets configuration to use a dedicated section for secrets variables ([23b3538](https://github.com/ZeroGachis/metabase-helm-chart/commit/23b353828be381b3cf1046d02e72cec9bed72d0b))
+
+
+### Tests
+
+* setup test env with Kind and CT ([3752da4](https://github.com/ZeroGachis/metabase-helm-chart/commit/3752da443673f549cab28ce98942b2fed927b387))
+
 ## [0.2.0](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.1.2...v0.2.0) (2025-09-16)
 
 
