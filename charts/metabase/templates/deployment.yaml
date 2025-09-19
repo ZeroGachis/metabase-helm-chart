@@ -15,7 +15,9 @@ spec:
         app: {{ .Values.global.service_name }}
         {{- include "metabase.labels" . | nindent 8 }}
     spec:
+      {{- if include "metabase.serviceAccountName" . }}
       serviceAccountName: {{ include "metabase.serviceAccountName" . }}
+      {{- end }}
       containers:
       - name: metabase
         image: {{ .Values.metabase.image.repository }}:{{ .Values.metabase.image.tag }}

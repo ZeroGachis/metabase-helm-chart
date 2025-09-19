@@ -54,10 +54,8 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 {{- define "metabase.serviceAccountName" -}}
-{{- if and .Values.serviceAccount .Values.serviceAccount.create }}
-{{- default "metabase-sa" .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" (and .Values.serviceAccount .Values.serviceAccount.name) }}
+{{- if and .Values.serviceAccount .Values.serviceAccount.create .Values.serviceAccount.name (ne .Values.serviceAccount.name "") }}
+{{- .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
 
