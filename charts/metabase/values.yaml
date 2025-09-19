@@ -135,6 +135,8 @@ vault:
     address: http://vault.vault.svc.cluster.local:8200
   # -- Vault authentication mount path
   authMount: kubernetes
+  # -- Vault role name for Kubernetes authentication
+  role: vault-metabase-role
   # -- Vault service account configuration
   serviceAccount:
     # -- Create Vault service account
