@@ -50,8 +50,8 @@ A Helm chart to deploy a Metabase instance for Kubernetes in a context with Hash
 | metabase.resources.requests | object | `{"cpu":"500m","memory":"1024Mi"}` | Resource requests |
 | metabase.resources.requests.cpu | string | `"500m"` | CPU request |
 | metabase.resources.requests.memory | string | `"1024Mi"` | Memory request |
+| metabase.secretsVars | list | `[{"envVars":[{"key":"DB_NAME","name":"MB_DB_DBNAME"},{"key":"DB_USER","name":"MB_DB_USER"},{"key":"DB_PASS","name":"MB_DB_PASS"}],"name":"metabase-db-credentials-secret","vaultPath":"metabase/db-credentials"},{"envVars":[{"key":"DB_HOST","name":"MB_DB_HOST"}],"name":"metabase-db-host-secret","vaultPath":"metabase/db-host"}]` | Secrets variables configuration |
 | metabase.tolerations | list | `[]` | Pod tolerations |
-| secrets.list | list | `[{"envVars":[{"key":"DB_NAME","name":"MB_DB_DBNAME"},{"key":"DB_USER","name":"MB_DB_USER"},{"key":"DB_PASS","name":"MB_DB_PASS"}],"name":"metabase-db-credentials-secret","vaultPath":"metabase/db-credentials"},{"envVars":[{"key":"DB_HOST","name":"MB_DB_HOST"}],"name":"metabase-db-host-secret","vaultPath":"metabase/db-host"}]` | List of secrets to create |
 | service.port | int | `3000` | Service port (port exposed by the service) |
 | service.targetPort | string | `nil` | Target port (port on the container, defaults to metabase.ports.http) |
 | service.type | string | `"ClusterIP"` | Service type (ClusterIP, NodePort, LoadBalancer) |

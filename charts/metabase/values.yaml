@@ -87,6 +87,23 @@ metabase:
       value: "-Xmx2g -Dc3p0.maxIdleTime=900 -Dc3p0.maxIdleTimeExcessConnections=1500"
     - name: MB_REDIRECT_ALL_REQUESTS_TO_HTTPS
       value: "false"
+  
+  # -- Secrets variables configuration
+  secretsVars:
+    - name: metabase-db-credentials-secret
+      vaultPath: metabase/db-credentials
+      envVars:
+        - name: MB_DB_DBNAME
+          key: DB_NAME
+        - name: MB_DB_USER
+          key: DB_USER
+        - name: MB_DB_PASS
+          key: DB_PASS
+    - name: metabase-db-host-secret
+      vaultPath: metabase/db-host
+      envVars:
+        - name: MB_DB_HOST
+          key: DB_HOST
 
 # Service configuration
 service:
@@ -103,24 +120,6 @@ serviceAccount:
   create: true
   # -- Service account name
   name: metabase-sa
-# Secret configuration
-secrets:
-  # -- List of secrets to create
-  list:
-    - name: metabase-db-credentials-secret
-      vaultPath: metabase/db-credentials
-      envVars:
-        - name: MB_DB_DBNAME
-          key: DB_NAME
-        - name: MB_DB_USER
-          key: DB_USER
-        - name: MB_DB_PASS
-          key: DB_PASS
-    - name: metabase-db-host-secret
-      vaultPath: metabase/db-host
-      envVars:
-        - name: MB_DB_HOST
-          key: DB_HOST
 # Vault configuration
 vault:
   # -- Vault connection configuration
