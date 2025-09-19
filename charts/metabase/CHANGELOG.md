@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.1](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.2.0...v0.2.1) (2025-09-19)
+
+
+### Bug Fixes
+
+* clean up Metabase chart configuration by removing unused global variables and persistence settings ([e1d8735](https://github.com/ZeroGachis/metabase-helm-chart/commit/e1d873584c11ad110276d57a0d334bd1014bc7ee))
+
+
+### Tests
+
+* setup test env with Kind and CT ([f2d5ef4](https://github.com/ZeroGachis/metabase-helm-chart/commit/f2d5ef45058b6b2b028b25cb06dc2f4b2dec749f))
+
 ## [0.2.0](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.1.2...v0.2.0) (2025-09-16)
 
 
