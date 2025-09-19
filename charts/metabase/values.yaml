@@ -4,12 +4,6 @@
 global:
   # -- Service name used for resource naming
   service_name: metabase
-  # -- Environment name (dev, staging, prod)
-  env_name: dev
-  # -- Application version
-  version: latest
-  # -- Kubernetes cluster name
-  cluster_name: default
   # -- Global labels applied to all resources
   labels: {}
 
@@ -66,16 +60,6 @@ metabase:
       cpu: 1000m
       # -- Memory limit
       memory: 2048Mi
-  # -- Persistence configuration
-  persistence:
-    # -- Enable persistent storage
-    enabled: false
-    # -- Storage class for persistent volume
-    storageClass: ""
-    # -- Access mode for persistent volume
-    accessMode: ReadWriteOnce
-    # -- Size of persistent volume
-    size: 10Gi
   # -- Number of replicas
   replicas: 1
   # -- Pod tolerations
