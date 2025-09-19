@@ -8,4 +8,5 @@ data:
   {{- range .Values.metabase.configMapVars }}
   {{ .name }}: {{ .value | quote }}
   {{- end }}
+  JAVA_OPTS: {{ .Values.metabase.javaOpts | quote }}
   MB_SITE_URL: https://{{ .Values.metabase.ingress.url }}/
