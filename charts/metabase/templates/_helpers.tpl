@@ -60,3 +60,14 @@ Create the name of the service account to use
 {{- default "default" (and .Values.serviceAccount .Values.serviceAccount.name) }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create the name of the vault service account to use
+*/}}
+{{- define "metabase.vaultServiceAccountName" -}}
+{{- if and .Values.vault.serviceAccount .Values.vault.serviceAccount.create }}
+{{- default "vault-metabase-sa" .Values.vault.serviceAccount.name }}
+{{- else }}
+{{- default "default" (and .Values.vault.serviceAccount .Values.vault.serviceAccount.name) }}
+{{- end }}
+{{- end }}
