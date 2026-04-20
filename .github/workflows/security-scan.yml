@@ -20,3 +20,5 @@ jobs:
     secrets: inherit
     with:
       scan-image: false
+      use-org-docker-image-ignore-rules: false
+      use-org-iac-ignore-rules: false
