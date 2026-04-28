@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.5.0...v0.6.0) (2026-04-28)
+
+
+### Features
+
+* **metabase:** add configurable startupProbe to Deployment ([58e400e](https://github.com/ZeroGachis/metabase-helm-chart/commit/58e400e992726b83cf8c6d6437b6df7a6d7043d5))
+
 ## [0.5.0](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.4.1...v0.5.0) (2025-09-19)
 
 
