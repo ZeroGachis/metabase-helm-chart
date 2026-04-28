@@ -44,6 +44,17 @@ spec:
               key: {{ .key }}
         {{- end }}
         {{- end }}
+        {{- if .Values.metabase.healthCheck.startup.enabled }}
+        startupProbe:
+          httpGet:
+            path: /api/health
+            port: {{ .Values.metabase.ports.http }}
+          initialDelaySeconds: {{ .Values.metabase.healthCheck.startup.initialDelaySeconds }}
+          periodSeconds: {{ .Values.metabase.healthCheck.startup.periodSeconds }}
+          timeoutSeconds: {{ .Values.metabase.healthCheck.startup.timeoutSeconds }}
+          successThreshold: {{ .Values.metabase.healthCheck.startup.successThreshold }}
+          failureThreshold: {{ .Values.metabase.healthCheck.startup.failureThreshold }}
+        {{- end }}
         readinessProbe:
           httpGet:
             path: /api/health

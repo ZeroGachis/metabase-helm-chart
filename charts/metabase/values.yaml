@@ -22,6 +22,25 @@ metabase:
   
   # -- Health check configuration
   healthCheck:
+    # -- Startup probe configuration. While the startup probe runs,
+    # liveness and readiness probes are suspended. Use it to give slow-
+    # starting JVM apps (Metabase Enterprise loads many drivers/plugins)
+    # enough time to come up before the liveness probe kicks in.
+    startup:
+      # -- Enable the startup probe
+      enabled: true
+      # -- Initial delay before startup probe starts (seconds)
+      initialDelaySeconds: 30
+      # -- Period between startup probe checks (seconds)
+      periodSeconds: 5
+      # -- Timeout for startup probe (seconds)
+      timeoutSeconds: 5
+      # -- Number of successful checks needed to consider the container started
+      successThreshold: 1
+      # -- Number of failed checks before giving up. Total window =
+      # initialDelaySeconds + (failureThreshold × periodSeconds).
+      # Default: 30 + 60×5 = 330s.
+      failureThreshold: 60
     # -- Readiness probe configuration
     readiness:
       # -- Initial delay before readiness probe starts (seconds)
