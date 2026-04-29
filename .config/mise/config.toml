@@ -56,15 +56,15 @@ run = [
 ]
 
 [tasks."ct:lint"]
-description = "Lint Helm chart using chart-testing (without version bump check)"
+description = "Lint Helm chart using chart-testing"
 run = [
-  "ct lint --lint-conf .ct/chart_schema.yaml --check-version-increment=false"
+  "ct lint --lint-conf .ct/chart_schema.yaml"
 ]
 
 
 [tasks."ct:lint_with_target"]
 description = "Lint Helm chart using chart-testing with customizable target branch"
 run = [
-  "ct lint --lint-conf .ct/chart_schema.yaml --check-version-increment=false --target-branch {{arg(name='target_branch', default='main')}}"
+  "ct lint --lint-conf .ct/chart_schema.yaml --target-branch {{arg(name='target_branch', default='main')}}"
 ]
 
