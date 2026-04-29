@@ -73,10 +73,11 @@ metabase:
       cpu: 500m
       # -- Memory request
       memory: 1024Mi
-    # -- Resource limits
+    # -- Resource limits. CPU is intentionally unset: CFS throttling on
+    # the JVM (startup, GC pauses, request bursts) tends to cause more
+    # harm than capping is worth. CPU requests still ensure scheduling
+    # fairness.
     limits:
-      # -- CPU limit
-      cpu: 1000m
       # -- Memory limit
       memory: 2048Mi
   # -- Number of replicas
