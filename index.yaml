@@ -2,6 +2,21 @@ apiVersion: v1
 entries:
   metabase:
   - apiVersion: v2
+    created: "2026-04-29T10:41:24.312053247Z"
+    description: A Helm chart to deploy a Metabase instance for Kubernetes in a context
+      with Hashicorp Vault as secret manager and Traefik as ingress controller.
+    digest: df6988395313168cfe19475093c4a2bffab2bd276fa102512f283ba6c5294546
+    home: https://github.com/ZeroGachis/metabase-helm-chart/
+    icon: https://www.metabase.com/img/favicon.ico
+    maintainers:
+    - email: devops@smartway.ai
+      name: Smartway
+    name: metabase
+    type: application
+    urls:
+    - https://github.com/ZeroGachis/metabase-helm-chart/releases/download/metabase-0.6.1/metabase-0.6.1.tgz
+    version: 0.6.1
+  - apiVersion: v2
     created: "2026-04-28T12:34:07.971620645Z"
     description: A Helm chart to deploy a Metabase instance for Kubernetes in a context
       with Hashicorp Vault as secret manager and Traefik as ingress controller.
@@ -115,4 +130,4 @@ entries:
     urls:
     - https://github.com/ZeroGachis/metabase-helm-chart/releases/download/metabase-0.1.2/metabase-0.1.2.tgz
     version: 0.1.2
-generated: "2026-04-28T12:34:07.971693782Z"
+generated: "2026-04-29T10:41:24.312078168Z"
