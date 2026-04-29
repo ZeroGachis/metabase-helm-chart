@@ -44,9 +44,8 @@ A Helm chart to deploy a Metabase instance for Kubernetes in a context with Hash
 | metabase.ports | object | `{"http":3000}` | Port configuration |
 | metabase.ports.http | int | `3000` | HTTP port for Metabase container |
 | metabase.replicas | int | `1` | Number of replicas |
-| metabase.resources | object | `{"limits":{"cpu":"1000m","memory":"2048Mi"},"requests":{"cpu":"500m","memory":"1024Mi"}}` | Resource requests and limits |
-| metabase.resources.limits | object | `{"cpu":"1000m","memory":"2048Mi"}` | Resource limits |
-| metabase.resources.limits.cpu | string | `"1000m"` | CPU limit |
+| metabase.resources | object | `{"limits":{"memory":"2048Mi"},"requests":{"cpu":"500m","memory":"1024Mi"}}` | Resource requests and limits |
+| metabase.resources.limits | object | `{"memory":"2048Mi"}` | Resource limits. CPU is intentionally unset: CFS throttling on the JVM (startup, GC pauses, request bursts) tends to cause more harm than capping is worth. CPU requests still ensure scheduling fairness. |
 | metabase.resources.limits.memory | string | `"2048Mi"` | Memory limit |
 | metabase.resources.requests | object | `{"cpu":"500m","memory":"1024Mi"}` | Resource requests |
 | metabase.resources.requests.cpu | string | `"500m"` | CPU request |
