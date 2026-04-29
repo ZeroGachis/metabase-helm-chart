@@ -20,7 +20,6 @@ run = [
 [tasks."kind:setup"]
 description = "Setup Vault and Traefik on kind cluster"
 run = [
-  "kubectl apply --context kind-kind -f https://raw.githubusercontent.com/traefik/traefik/v3.5/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml",
   "helm repo add hashicorp https://helm.releases.hashicorp.com",
   "helm repo add traefik https://traefik.github.io/charts",
   "helm repo update",
