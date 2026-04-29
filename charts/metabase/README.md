@@ -39,7 +39,7 @@ A Helm chart to deploy a Metabase instance for Kubernetes in a context with Hash
 | metabase.ingress.entryPoints | list | `["internal"]` | Entry points for Traefik |
 | metabase.ingress.tls | object | `{"enabled":false,"secretName":""}` | TLS configuration |
 | metabase.ingress.url | string | `"metabase.example.com"` | IngressRoute URL/hostname |
-| metabase.javaOpts | string | `"-Xmx1g -Dc3p0.maxIdleTime=900 -Dc3p0.maxIdleTimeExcessConnections=1500"` | Java options for Metabase JVM |
+| metabase.javaToolOptions | string | `""` | Extra JVM options injected as JAVA_TOOL_OPTIONS. The JVM reads JAVA_TOOL_OPTIONS automatically in addition to JAVA_OPTS, so this extends rather than overrides image-level JVM configuration (e.g. log4j2 file location baked into a custom image). Typical use: heap sizing (-Xmx) and connection pool tuning. Empty by default. |
 | metabase.nodeSelector | object | `{}` | Node selector for pod placement |
 | metabase.ports | object | `{"http":3000}` | Port configuration |
 | metabase.ports.http | int | `3000` | HTTP port for Metabase container |
