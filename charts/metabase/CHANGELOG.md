@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.1](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.6.0...v0.6.1) (2026-04-29)
+
+
+### Bug Fixes
+
+* **metabase:** drop legacy JAVA_OPTS ConfigMap injection ([5f313bd](https://github.com/ZeroGachis/metabase-helm-chart/commit/5f313bd0205e07330e5830b41a1c96e7522f2eb3))
+* **metabase:** drop legacy JAVA_OPTS ConfigMap injection ([f8f1b76](https://github.com/ZeroGachis/metabase-helm-chart/commit/f8f1b7635deec3a9d6690edcb1cce1d27d2565be))
+* **metabase:** remove default CPU limit ([9e2196b](https://github.com/ZeroGachis/metabase-helm-chart/commit/9e2196b0384124ee5470252a64bfad5b6381275e))
+* **metabase:** remove default CPU limit ([57d7aeb](https://github.com/ZeroGachis/metabase-helm-chart/commit/57d7aeb074f5c248c933ca98c99a736dca17d717))
+* **metabase:** wire javaToolOptions as JAVA_TOOL_OPTIONS env var ([2500358](https://github.com/ZeroGachis/metabase-helm-chart/commit/25003588660e7438ef602575bfab7f308a2bd499))
+* **metabase:** wire javaToolOptions as JAVA_TOOL_OPTIONS env var ([37bbe6e](https://github.com/ZeroGachis/metabase-helm-chart/commit/37bbe6e77554e4f911b01b106b96811c72fb6177))
+
 ## [0.6.0](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.5.0...v0.6.0) (2026-04-28)
 
 
