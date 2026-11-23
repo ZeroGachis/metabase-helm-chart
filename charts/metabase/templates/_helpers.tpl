@@ -69,3 +69,54 @@ Create the name of the vault service account to use
 {{- printf "vault-%s-sa" .Values.global.service_name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Environment shared by the metabase container and the enable-encryption init
+container, so both connect to the same application database with the same key.
+*/}}
+{{- define "metabase.containerEnv" -}}
+envFrom:
+- configMapRef:
+    name: {{ .Values.global.service_name }}-config
+env:
+{{- if .Values.metabase.javaToolOptions }}
+- name: JAVA_TOOL_OPTIONS
+  value: {{ .Values.metabase.javaToolOptions | quote }}
+{{- end }}
+{{- range .Values.metabase.secretsVars }}
+{{- $secretName := .name }}
+{{- range .envVars }}
+- name: {{ .name }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ $secretName }}
+      key: {{ .key }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{/*
+Reject encryption bootstrap settings that would let a pod read or write the
+application database while enable-encryption runs: a RollingUpdate keeps old
+pods (without the key) serving, and several replicas would run the init
+container concurrently.
+*/}}
+{{- define "metabase.validateEncryptionBootstrap" -}}
+{{- if ne .Values.metabase.strategy "Recreate" }}
+{{- fail "metabase.encryption.bootstrap requires metabase.strategy=Recreate" }}
+{{- end }}
+{{- if ne (int .Values.metabase.replicas) 1 }}
+{{- fail "metabase.encryption.bootstrap requires metabase.replicas=1" }}
+{{- end }}
+{{- $hasKey := false }}
+{{- range .Values.metabase.secretsVars }}
+{{- range .envVars }}
+{{- if eq .name "MB_ENCRYPTION_SECRET_KEY" }}
+{{- $hasKey = true }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- if not $hasKey }}
+{{- fail "metabase.encryption.bootstrap requires MB_ENCRYPTION_SECRET_KEY in metabase.secretsVars" }}
+{{- end }}
+{{- end }}

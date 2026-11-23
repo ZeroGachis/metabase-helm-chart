@@ -88,6 +88,21 @@ metabase:
   # log4j2 file location baked into a custom image). Typical use: heap
   # sizing (-Xmx) and connection pool tuning. Empty by default.
   javaToolOptions: ""
+  # -- Deployment update strategy type (RollingUpdate or Recreate).
+  # Recreate terminates every running pod before new ones start, at the
+  # cost of downtime on each rollout.
+  strategy: RollingUpdate
+  # -- Application database encryption at rest
+  encryption:
+    # -- Run Metabase `enable-encryption` in an init container before
+    # Metabase starts, to encrypt an existing plaintext application
+    # database with MB_ENCRYPTION_SECRET_KEY. Idempotent (no-op when the
+    # database is already encrypted with that key) and aborts without
+    # changes on a key mismatch. Requires `strategy: Recreate`,
+    # `replicas: 1` and MB_ENCRYPTION_SECRET_KEY in `secretsVars`, so no
+    # pod uses the database while it is encrypted. Meant for the one-off
+    # migration of an existing instance: disable it once encrypted.
+    bootstrap: false
   # -- Pod tolerations
   tolerations: []
   # -- Node selector for pod placement

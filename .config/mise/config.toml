@@ -46,25 +46,25 @@ run = "kind delete cluster"
 [tasks."ct:install"]
 description = "Test Helm chart installation using chart-testing"
 run = [
-  "ct install"
+  "ct install --config .github/ct.yaml"
 ]
 
 [tasks."ct:install_with_target"]
 description = "Test Helm chart installation using chart-testing with customizable target branch"
 run = [
-  "ct install --target-branch {{arg(name='target_branch', default='main')}}"
+  "ct install --config .github/ct.yaml --target-branch {{arg(name='target_branch', default='main')}}"
 ]
 
 [tasks."ct:lint"]
 description = "Lint Helm chart using chart-testing"
 run = [
-  "ct lint --lint-conf .ct/chart_schema.yaml"
+  "ct lint --config .github/ct.yaml --lint-conf .ct/chart_schema.yaml"
 ]
 
 
 [tasks."ct:lint_with_target"]
 description = "Lint Helm chart using chart-testing with customizable target branch"
 run = [
-  "ct lint --lint-conf .ct/chart_schema.yaml --target-branch {{arg(name='target_branch', default='main')}}"
+  "ct lint --config .github/ct.yaml --lint-conf .ct/chart_schema.yaml --target-branch {{arg(name='target_branch', default='main')}}"
 ]
 

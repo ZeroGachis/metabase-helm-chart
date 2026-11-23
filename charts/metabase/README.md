@@ -1,6 +1,6 @@
 # metabase
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.6.1](https://img.shields.io/badge/Version-0.6.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart to deploy a Metabase instance for Kubernetes in a context with Hashicorp Vault as secret manager and Traefik as ingress controller.
 
@@ -19,7 +19,9 @@ A Helm chart to deploy a Metabase instance for Kubernetes in a context with Hash
 | global.labels | object | `{}` | Global labels applied to all resources |
 | global.service_name | string | `"metabase"` | Service name used for resource naming |
 | metabase.configMapVars | list | `[{"name":"MB_DB_TYPE","value":"h2"},{"name":"MB_DB_PORT","value":"5432"},{"name":"MB_REDIRECT_ALL_REQUESTS_TO_HTTPS","value":"false"}]` | ConfigMap variables configuration |
-| metabase.healthCheck | object | `{"liveness":{"failureThreshold":10,"initialDelaySeconds":90,"periodSeconds":15,"successThreshold":1,"timeoutSeconds":5},"readiness":{"failureThreshold":10,"initialDelaySeconds":120,"periodSeconds":15,"successThreshold":1,"timeoutSeconds":5}}` | Health check configuration |
+| metabase.encryption | object | `{"bootstrap":false}` | Application database encryption at rest |
+| metabase.encryption.bootstrap | bool | `false` | Run Metabase `enable-encryption` in an init container before Metabase starts, to encrypt an existing plaintext application database with MB_ENCRYPTION_SECRET_KEY. Idempotent (no-op when the database is already encrypted with that key) and aborts without changes on a key mismatch. Requires `strategy: Recreate`, `replicas: 1` and MB_ENCRYPTION_SECRET_KEY in `secretsVars`, so no pod uses the database while it is encrypted. Meant for the one-off migration of an existing instance: disable it once encrypted. |
+| metabase.healthCheck | object | `{"liveness":{"failureThreshold":10,"initialDelaySeconds":90,"periodSeconds":15,"successThreshold":1,"timeoutSeconds":5},"readiness":{"failureThreshold":10,"initialDelaySeconds":120,"periodSeconds":15,"successThreshold":1,"timeoutSeconds":5},"startup":{"enabled":true,"failureThreshold":60,"initialDelaySeconds":30,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":5}}` | Health check configuration |
 | metabase.healthCheck.liveness | object | `{"failureThreshold":10,"initialDelaySeconds":90,"periodSeconds":15,"successThreshold":1,"timeoutSeconds":5}` | Liveness probe configuration |
 | metabase.healthCheck.liveness.failureThreshold | int | `10` | Number of failed checks before restarting container |
 | metabase.healthCheck.liveness.initialDelaySeconds | int | `90` | Initial delay before liveness probe starts (seconds) |
@@ -32,6 +34,13 @@ A Helm chart to deploy a Metabase instance for Kubernetes in a context with Hash
 | metabase.healthCheck.readiness.periodSeconds | int | `15` | Period between readiness probe checks (seconds) |
 | metabase.healthCheck.readiness.successThreshold | int | `1` | Number of successful checks needed for readiness |
 | metabase.healthCheck.readiness.timeoutSeconds | int | `5` | Timeout for readiness probe (seconds) |
+| metabase.healthCheck.startup | object | `{"enabled":true,"failureThreshold":60,"initialDelaySeconds":30,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":5}` | Startup probe configuration. While the startup probe runs, liveness and readiness probes are suspended. Use it to give slow- starting JVM apps (Metabase Enterprise loads many drivers/plugins) enough time to come up before the liveness probe kicks in. |
+| metabase.healthCheck.startup.enabled | bool | `true` | Enable the startup probe |
+| metabase.healthCheck.startup.failureThreshold | int | `60` | Number of failed checks before giving up. Total window = initialDelaySeconds + (failureThreshold × periodSeconds). Default: 30 + 60×5 = 330s. |
+| metabase.healthCheck.startup.initialDelaySeconds | int | `30` | Initial delay before startup probe starts (seconds) |
+| metabase.healthCheck.startup.periodSeconds | int | `5` | Period between startup probe checks (seconds) |
+| metabase.healthCheck.startup.successThreshold | int | `1` | Number of successful checks needed to consider the container started |
+| metabase.healthCheck.startup.timeoutSeconds | int | `5` | Timeout for startup probe (seconds) |
 | metabase.image | object | `{"repository":"metabase/metabase","tag":"latest"}` | Metabase image configuration |
 | metabase.image.repository | string | `"metabase/metabase"` | Metabase image repository |
 | metabase.image.tag | string | `"latest"` | Metabase image tag |
@@ -51,6 +60,7 @@ A Helm chart to deploy a Metabase instance for Kubernetes in a context with Hash
 | metabase.resources.requests.cpu | string | `"500m"` | CPU request |
 | metabase.resources.requests.memory | string | `"1024Mi"` | Memory request |
 | metabase.secretsVars | list | `[{"envVars":[{"key":"DB_NAME","name":"MB_DB_DBNAME"},{"key":"DB_USER","name":"MB_DB_USER"},{"key":"DB_PASS","name":"MB_DB_PASS"}],"name":"metabase-db-credentials-secret","vaultPath":"metabase/db-credentials"},{"envVars":[{"key":"DB_HOST","name":"MB_DB_HOST"}],"name":"metabase-db-host-secret","vaultPath":"metabase/db-host"}]` | Secrets variables configuration |
+| metabase.strategy | string | `"RollingUpdate"` | Deployment update strategy type (RollingUpdate or Recreate). Recreate terminates every running pod before new ones start, at the cost of downtime on each rollout. |
 | metabase.tolerations | list | `[]` | Pod tolerations |
 | service.port | int | `3000` | Service port (port exposed by the service) |
 | service.targetPort | string | `nil` | Target port (port on the container, defaults to metabase.ports.http) |
@@ -63,9 +73,9 @@ A Helm chart to deploy a Metabase instance for Kubernetes in a context with Hash
 | vault.connection.create | bool | `true` | Create VaultConnection resource |
 | vault.connection.name | string | `"default"` | VaultConnection resource name |
 | vault.role | string | `"vault-metabase-role"` | Vault role name for Kubernetes authentication |
-| vault.serviceAccount | object | `{"create":true,"name":"vault-metabase-sa"}` | Vault service account configuration |
+| vault.serviceAccount | object | `{"create":true,"name":""}` | Vault service account configuration |
 | vault.serviceAccount.create | bool | `true` | Create Vault service account |
-| vault.serviceAccount.name | string | `"vault-metabase-sa"` | Vault service account name |
+| vault.serviceAccount.name | string | `""` | Vault service account name |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)
