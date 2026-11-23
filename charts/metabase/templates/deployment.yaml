@@ -6,6 +6,15 @@ metadata:
     {{ toYaml .Values.global.labels | nindent 4 }}
 spec:
   replicas: {{ .Values.metabase.replicas }}
+  strategy:
+    type: {{ .Values.metabase.strategy }}
+    {{- if eq .Values.metabase.strategy "Recreate" }}
+    # The API server defaults rollingUpdate on RollingUpdate Deployments;
+    # a client-side apply switching to Recreate keeps it and is rejected
+    # unless the patch clears it explicitly.
+    # https://github.com/kubernetes/kubernetes/issues/24198
+    rollingUpdate: null
+    {{- end }}
   selector:
     matchLabels:
       app: {{ .Values.global.service_name }}

@@ -88,6 +88,10 @@ metabase:
   # log4j2 file location baked into a custom image). Typical use: heap
   # sizing (-Xmx) and connection pool tuning. Empty by default.
   javaToolOptions: ""
+  # -- Deployment update strategy type (RollingUpdate or Recreate).
+  # Recreate terminates every running pod before new ones start, at the
+  # cost of downtime on each rollout.
+  strategy: RollingUpdate
   # -- Pod tolerations
   tolerations: []
   # -- Node selector for pod placement
