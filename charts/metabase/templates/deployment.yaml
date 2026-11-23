@@ -30,6 +30,17 @@ spec:
       {{- if include "metabase.serviceAccountName" . }}
       serviceAccountName: {{ include "metabase.serviceAccountName" . }}
       {{- end }}
+      {{- if .Values.metabase.encryption.bootstrap }}
+      {{- include "metabase.validateEncryptionBootstrap" . }}
+      initContainers:
+      - name: enable-encryption
+        image: {{ .Values.metabase.image.repository }}:{{ .Values.metabase.image.tag }}
+        imagePullPolicy: Always
+        args: ["enable-encryption"]
+        resources:
+          {{- toYaml .Values.metabase.resources | nindent 10 }}
+        {{- include "metabase.containerEnv" . | nindent 8 }}
+      {{- end }}
       containers:
       - name: metabase
         image: {{ .Values.metabase.image.repository }}:{{ .Values.metabase.image.tag }}
@@ -39,24 +50,7 @@ spec:
           name: metabase
         resources:
           {{- toYaml .Values.metabase.resources | nindent 10 }}
-        envFrom:
-        - configMapRef:
-            name: {{ .Values.global.service_name }}-config
-        env:
-        {{- if .Values.metabase.javaToolOptions }}
-        - name: JAVA_TOOL_OPTIONS
-          value: {{ .Values.metabase.javaToolOptions | quote }}
-        {{- end }}
-        {{- range .Values.metabase.secretsVars }}
-        {{- $secretName := .name }}
-        {{- range .envVars }}
-        - name: {{ .name }}
-          valueFrom:
-            secretKeyRef:
-              name: {{ $secretName }}
-              key: {{ .key }}
-        {{- end }}
-        {{- end }}
+        {{- include "metabase.containerEnv" . | nindent 8 }}
         {{- if .Values.metabase.healthCheck.startup.enabled }}
         startupProbe:
           httpGet:
