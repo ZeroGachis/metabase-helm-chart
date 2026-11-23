@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.7.0](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.6.1...v0.7.0) (2026-11-23)
+
+
+### Features
+
+* **metabase:** add configurable deployment strategy ([f627692](https://github.com/ZeroGachis/metabase-helm-chart/commit/f62769267dd450988c17346c70e43681dd35ce78))
+* **metabase:** add encryption bootstrap init container ([dd6bfd7](https://github.com/ZeroGachis/metabase-helm-chart/commit/dd6bfd7f686c7e9eeb701716be34f4997dbf947a))
+* **metabase:** encryption bootstrap init container and configurable strategy ([41b9e1f](https://github.com/ZeroGachis/metabase-helm-chart/commit/41b9e1f129b496b4be19f183f897b93f9d31462d))
+
 ## [0.6.1](https://github.com/ZeroGachis/metabase-helm-chart/compare/v0.6.0...v0.6.1) (2026-04-29)
 
 
